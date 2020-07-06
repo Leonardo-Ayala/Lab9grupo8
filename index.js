@@ -13,21 +13,27 @@ fs.readFile("Hola.txt",function (error,info){
 });
 console.log("Fin del programa");*/
 
+//esta parte se copia
 'use strict'
 const express = require("express");
+const path = require("path");
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
-
 var app = express();
 app.use(bodyParser.urlencoded({extended:true}));
+// la parte superior se copia
 
+app.listen(8080,function (){
+    console.log("Servidor levantado correctamente");
+});
+
+//crear conexion a DB
 var connection = mysql.createConnection({
     host:"localhost",
     user:"root",
     password:"root",
     database:"northwind"
 });
-
 connection.connect(function (error) {
     if(error){
         console.log(error);
@@ -35,10 +41,8 @@ connection.connect(function (error) {
         console.log("Conexion correcta a BD");
     }
 });
+//hasta aqui se prueba la conneccion a la DB
 
-app.listen(8080,function (){
-    console.log("Servidor levantado correctamente");
-});
 
 app.get("/listarProductos",function (request,response) {
     var query = "select * from products";
@@ -63,7 +67,6 @@ app.get("/obtenerProducto/:id",function (request,response) {
     });
 });
 
-//localhost:3000/
 app.get("/",function (request,response){
     response.send("Hola Leo");
 });
@@ -75,6 +78,7 @@ app.get("/pucp/:nombre",function (request,response){
     response.send("Hola "+ nombre);
 });
 
+//se recibe parametro con ?name=algo
 app.get("/telecom",function (request,response){
     var nombre = request.query.nombre;
     console.log("Nueva solicitud a /telecom?nombre="+nombre);
@@ -84,13 +88,19 @@ app.get("/telecom",function (request,response){
 /*parametros por post
 *nombre
 *apellido
-* */
+*POSTMAN POST: BODY/x-www-form... */
 app.post("/post",function (request,response){
     var nombre = request.body.nombre;
     var apellido = request.body.apellido;
     //response.send(`Nombre: ${nombre} | Apellido: ${apellido}`);
-    var jsonRespuesta = {"nombre":nombre,
-                        "apellido":apellido};
+    var jsonRespuesta = {data:{nombre:nombre,apellido: apellido}};
+    //var jsonRespuestaOpt = {"nombre":nombre, "apellido":apellido};
     response.json(jsonRespuesta);
 });
 
+//se RECIBE un json JSON json JSON
+//Postman con POST: BODY/RAW/JSON
+app.post("/hola",express.json(), function (request,response){
+    response.json(request.body);
+    console.log(request.body);
+});
