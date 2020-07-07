@@ -176,12 +176,12 @@ app.post("/categoriasEquipo/update",function (request,response){
 // todo.. 3A
 app.post("/sitios/create",function (request,response){
     var idsitio = request.body.idsitio;
-    var codigositio = request.body.codigositio;
-    var idcentropoblado = request.body.idcentropoblado;
+    var codigoSitio = request.body.codigositio;
+    var idCentroPoblado = request.body.idcentropoblado;
     var latitud = request.body.latitud;
     var longitud = request.body.longitud;
     var query = "INSERT INTO sitios (codigositio,idcentropoblado,latitud,longitud)  values (?, ?, ?, ?)";
-    var parametros = [codigositio,idcentropoblado,latitud,longitud ];
+    var parametros = [codigoSitio,idCentroPoblado,latitud,longitud ];
     connection.query(query,parametros,function (error,result) {
         if(error){
             console.log(error);
@@ -208,7 +208,7 @@ app.post("/equipos/create",function (request,response){
     var serialnumber = request.body.serialnumber;
     var modelo = request.body.modelo;
     var idsitio = request.body.idsitio;
-    var query = "INSERT INTO equipos (idequipo,nombreequipo,idcategoriaequipo,serialnumber,modelo,idsitio)  values (?, ?, ?, ?, ?,?)";
+    var query = "INSERT INTO equipos (idequipo,nombreEquipo,idCategoriaEquipo,serialNumber,modelo,idSitio)  values (?, ?, ?, ?, ?,?)";
     var parametros = [nombreequipo,idcategoriaequipo,serialnumber,modelo,idsitio  ];
     connection.query(query,parametros,function (error,result) {
         if(error){
