@@ -27,4 +27,25 @@ connection.connect(function (error) {
 });
 //hasta aqui se prueba la conneccion a la DB
 
+app.get("/centrosPoblados/get/:id",function (request,response) {
+    var id = request.params.id;
+    var query = "select * from centrospoblados where idCentroPoblado = ?";
+    connection.query(query,[id],function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            response.json(result);
+        }
+    });
+});
 
+app.get("/centrosPoblados/get",function (request,response) {
+    var query = "select * from centrospoblados";
+    connection.query(query,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            response.json(result);
+        }
+    });
+});
