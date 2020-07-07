@@ -50,10 +50,36 @@ app.get("/listarProductos",function (request,response) {
         if(error){
             console.log(error);
         }else{
-            response.json(result);
+            var prueba = [];
+            result.forEach((res) => {
+                //console.log(`${res.ProductName} lives in`);
+                prueba.push({nombre:res.ProductName,
+                                id:res.ProductID});
+            });
+            console.log(result.length);
+            response.json(prueba);
         }
     });
 });
+
+app.get("/listarProductosFor",function (request,response) {
+    var query = "select * from products";
+    connection.query(query,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            var prueba = [];
+            var i;
+            for(i=0;i<result.length;i++){
+                prueba.push({nombre:result[i].ProductName,
+                            id:result[i].ProductID});
+            }
+            console.log(result.length);
+            response.json(prueba);
+        }
+    });
+});
+
 
 app.get("/obtenerProducto/:id",function (request,response) {
     var id = request.params.id;
@@ -62,7 +88,10 @@ app.get("/obtenerProducto/:id",function (request,response) {
         if(error){
             console.log(error);
         }else{
-            response.json(result);
+            var prueba = [];
+            prueba.push({idproducto:result[0].ProductName});
+            console.log(prueba);
+            response.json(prueba);
         }
     });
 });
