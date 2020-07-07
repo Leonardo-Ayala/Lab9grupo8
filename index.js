@@ -167,3 +167,65 @@ app.post("/categoriasEquipo/update",function (request,response){
     });
 
 });
+
+
+
+
+//............................
+
+// todo.. 3A
+app.post("/sitios/create",function (request,response){
+    var idsitio = request.body.idsitio;
+    var codigositio = request.body.codigositio;
+    var idcentropoblado = request.body.idcentropoblado;
+    var latitud = request.body.latitud;
+    var longitud = request.body.longitud;
+    var query = "INSERT INTO sitios (codigositio,idcentropoblado,latitud,longitud)  values (?, ?, ?, ?)";
+    var parametros = [codigositio,idcentropoblado,latitud,longitud ];
+    connection.query(query,parametros,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            var query = "select  from sitios where idCentroPoblado = ?";
+            var parametros2 = [idsitio];
+            connection.query(query,parametros2,function (error,result) {
+                if(error){
+                    console.log(error);
+                }else{
+                    response.json(result);
+                }
+            });
+        }
+    });
+
+});
+// todo ... termina 3A
+// todo .. 3B
+app.post("/equipos/create",function (request,response){
+    var idequipo = request.body.idequipo;
+    var nombreequipo = request.body.nombreequipo;
+    var idcategoriaequipo = request.body.idcategoriaequipo;
+    var serialnumber = request.body.serialnumber;
+    var modelo = request.body.modelo;
+    var idsitio = request.body.idsitio;
+    var query = "INSERT INTO equipos (idequipo,nombreequipo,idcategoriaequipo,serialnumber,modelo,idsitio)  values (?, ?, ?, ?, ?,?)";
+    var parametros = [nombreequipo,idcategoriaequipo,serialnumber,modelo,idsitio  ];
+    connection.query(query,parametros,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            var query = "select * from equipos where idequipo = ?";
+            var parametros2 = [idequipo];
+            connection.query(query,parametros2,function (error,result) {
+                if(error){
+                    console.log(error);
+                }else{
+                    response.json(result);
+                }
+            });
+        }
+    });
+
+});
+
+//todo ...termina 3B
