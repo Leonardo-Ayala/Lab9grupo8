@@ -50,6 +50,7 @@ app.get("/centrosPoblados/get",function (request,response) {
     });
 });
 
+
 app.post("/centrosPoblados/create",function (request,response){
     var idCentroPoblado = request.body.idCentroPoblado;
     var nombreCentroPoblado = request.body.nombreCentroPoblado;
@@ -97,3 +98,32 @@ app.post("/centrosPoblados/update",function (request,response){
     });
 
 });
+
+//2a
+app.get("/categoriasEquipo/:id",function(request,response){
+
+    var id = request.query.id;
+
+    if (id==null){
+        var query = "select * from categoriaequipo";
+        connection.query(query,[id],function (error,result) {
+            if (error) {
+                console.log(error);
+            } else {
+                response.json(result);
+            }
+        })
+    } else {
+        var query = "select * from categoriaequipo where idCategoriaEquipo = ?";
+        connection.query(query,[id],function (error,result) {
+            if (error) {
+                console.log(error);
+            } else {
+                response.json(result);
+            }
+        })
+    }
+})
+//2b
+
+
