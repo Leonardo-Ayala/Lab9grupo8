@@ -74,4 +74,21 @@ app.get("/categoriasEquipo/:id",function(request,response){
         })
     }
 })
+
 //2b
+app.post("/categoriasEquipo/create", function(request, response){
+    var nombreEquipo = request.body.nombreEquipo;
+    if (nombreEquipo!==""){
+        var query1 = "INSERT INTO inventariotest.categoriaequipo (`nombre`) VALUES (?)";
+        connection.query(query1,[nombreEquipo],function (error,result) {
+            if (error) {
+                console.log(error);
+            } else {
+                response.send(`Se agregó el equipo con nombre: ${nombreEquipo}`)
+
+            }
+        })
+    }
+})
+
+
