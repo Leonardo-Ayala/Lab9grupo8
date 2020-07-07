@@ -49,6 +49,56 @@ app.get("/centrosPoblados/get",function (request,response) {
         }
     });
 });
+
+
+app.post("/centrosPoblados/create",function (request,response){
+    var idCentroPoblado = request.body.idCentroPoblado;
+    var nombreCentroPoblado = request.body.nombreCentroPoblado;
+    var ubigeo = request.body.ubigeo;
+    var query = "INSERT INTO centrospoblados (idCentroPoblado,nombreCentroPoblado,ubigeo)  values (?, ?, ?)";
+    var parametros = [idCentroPoblado,nombreCentroPoblado,ubigeo];
+    connection.query(query,parametros,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            var query = "select * from centrospoblados where idCentroPoblado = ?";
+            var parametros2 = [idCentroPoblado];
+            connection.query(query,parametros2,function (error,result) {
+                if(error){
+                    console.log(error);
+                }else{
+                    response.json(result);
+                }
+            });
+        }
+    });
+
+});
+
+app.post("/centrosPoblados/update",function (request,response){
+    var idCentroPoblado = request.body.idCentroPoblado;
+    var nombreCentroPoblado = request.body.nombreCentroPoblado;
+    var ubigeo = request.body.ubigeo;
+    var query = "UPDATE centrospoblados SET nombreCentroPoblado = ?,ubigeo = ? Where idCentroPoblado = ?";
+    var parametros = [nombreCentroPoblado,ubigeo,idCentroPoblado];
+    connection.query(query,parametros,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            var query = "select * from centrospoblados where idCentroPoblado = ?";
+            var parametros2 = [idCentroPoblado];
+            connection.query(query,parametros2,function (error,result) {
+                if(error){
+                    console.log(error);
+                }else{
+                    response.json(result);
+                }
+            });
+        }
+    });
+
+});
+
 //2a
 app.get("/categoriasEquipo/:id",function(request,response){
 
@@ -75,6 +125,7 @@ app.get("/categoriasEquipo/:id",function(request,response){
     }
 })
 
+
 //2b
 app.post("/categoriasEquipo/create", function(request, response){
     var nombreEquipo = request.body.nombreEquipo;
@@ -90,5 +141,4 @@ app.post("/categoriasEquipo/create", function(request, response){
         })
     }
 })
-
 
