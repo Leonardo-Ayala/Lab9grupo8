@@ -99,46 +99,71 @@ app.post("/centrosPoblados/update",function (request,response){
 
 });
 
-//2a
-app.get("/categoriasEquipo/:id",function(request,response){
 
-    var id = request.query.id;
+app.get("/categoriasEquipo/get/:id",function (request,response) {
+    var id = request.params.id;
+    var query = "select * from categoriaequipo where idCategoriaEquipo = ?";
+    connection.query(query,[id],function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            response.json(result);
+        }
+    });
+});
 
-    if (id==null){
-        var query = "select * from categoriaequipo";
-        connection.query(query,[id],function (error,result) {
-            if (error) {
-                console.log(error);
-            } else {
-                response.json(result);
-            }
-        })
-    } else {
-        var query = "select * from categoriaequipo where idCategoriaEquipo = ?";
-        connection.query(query,[id],function (error,result) {
-            if (error) {
-                console.log(error);
-            } else {
-                response.json(result);
-            }
-        })
-    }
-})
+app.get("/categoriasEquipo/get",function (request,response) {
+    var query = "select * from categoriaequipo";
+    connection.query(query,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            response.json(result);
+        }
+    });
+});
 
+app.post("/categoriasEquipo/create",function (request,response){
+    var nombreCategoriaEquipo = request.body.nombreCategoriaEquipo;
+    var query = "INSERT INTO categoriaequipo (nombre)  values (?)";
+    var parametros = [nombreCategoriaEquipo];
+    connection.query(query,parametros,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            var query = "select * from categoriaequipo where idCategoriaEquipo = ?";
+            var parametros2 = [result.insertId];
+            connection.query(query,parametros2,function (error,result2) {
+                if(error){
+                    console.log(error);
+                }else{
+                    response.json(result2);
+                }
+            });
+        }
+    });
 
-//2b
-app.post("/categoriasEquipo/create", function(request, response){
-    var nombreEquipo = request.body.nombreEquipo;
-    if (nombreEquipo!==""){
-        var query1 = "INSERT INTO inventariotest.categoriaequipo (`nombre`) VALUES (?)";
-        connection.query(query1,[nombreEquipo],function (error,result) {
-            if (error) {
-                console.log(error);
-            } else {
-                response.send(`Se agregó el equipo con nombre: ${nombreEquipo}`)
+});
 
-            }
-        })
-    }
-})
+app.post("/categoriasEquipo/update",function (request,response){
+    var idCategoriaEquipo = request.body.idCategoriaEquipo;
+    var nombreCategoriaEquipo = request.body.nombreCategoriaEquipo;
+    var query = "UPDATE categoriaequipo SET nombre = ? Where idCategoriaEquipo = ?";
+    var parametros = [nombreCategoriaEquipo,idCategoriaEquipo];
+    connection.query(query,parametros,function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            var query = "select * from categoriaequipo where idCategoriaEquipo = ?";
+            var parametros2 = [idCategoriaEquipo];
+            connection.query(query,parametros2,function (error,result) {
+                if(error){
+                    console.log(error);
+                }else{
+                    response.json(result);
+                }
+            });
+        }
+    });
 
+});
