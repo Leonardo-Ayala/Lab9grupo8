@@ -100,11 +100,13 @@ app.post("/centrosPoblados/update",function (request,response){
 });
 
 //2a
-app.get("/categoriasEquipo/:id",function(request,response){
 
-    var id = request.query.id;
+app.get("/categoriasEquipo/get/:id",function(request,response){
+    var id = request.params.id;
+    //var id = request.query.id;
 
     if (id==null){
+        var id = request.query.id;
         var query = "select * from categoriaequipo";
         connection.query(query,[id],function (error,result) {
             if (error) {
@@ -141,4 +143,6 @@ app.post("/categoriasEquipo/create", function(request, response){
         })
     }
 })
+
+//2c
 
